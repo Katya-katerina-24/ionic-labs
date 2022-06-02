@@ -1,5 +1,7 @@
 {
-  "name": "ionic-labs",
-  "integrations": {},
+  "name": "users-list",
+  "integrations": {
+    "capacitor": {}
+  },
   "type": "angular"
 }
