@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
 
 export interface UserGroup {
   id: number;
@@ -12,80 +13,66 @@ export interface UserGroup {
   providedIn: 'root'
 })
 export class DataGetterService {
-  private userGroups: UserGroup[] = [
-    {
-      id: 1,
-      parkingName: 'Dream',
-      name: 'Artem Andreevich',
-      places: 400
-    },
-    {
-      id: 2,
-      parkingName: 'Merkuriy',
-      name: 'Katya Buk',
-      places: 700
-    }
-  ];
-  private user = [
-    {
-      id: 1,
-      name:'Toyota',
-      parkingName: 'Dream',
-      number: 'BE2727EE',
-      place: 40
-    },
-    {
-      id: 2,
-      name:'Skoda',
-      userGroup: 'Merkuriy',
-      number: 'BE9743EM',
-      place: 12
-    }
-
-
-  ];
-  getUsers(userGroup: string): Observable<any[]> {
-    return of(this.user.filter(elem => {
-      return elem.userGroup === userGroup;
-    }))
-  }
-
+  baseUrl = 'http://localhost/api/';
+  userGroups = [];
+  users = [];
+  accounts = [];
 
   private userName = '';
-  private Users = ['admin','user'];
+  private token = '';
 
+  constructor(private http: HttpClient) { }
 
-
-  constructor() { }
+  checkUser(user) {
+    return this.http.post<any>(this.baseUrl + '?action=login', user);
+  }
 
   getUser() {
     return this.userName;
   }
+
+  editUserGroup(userGroup) {
+    return this.http.post<any>(
+      this.baseUrl + '?action=edit-usergroup&token=' + this.token, userGroup
+    );
+  }
+
   setUser(name: string) {
     this.userName = name;
   }
 
-  // userExists(name: string) {
-  //   return of(this.user.filter(elem => {
-  //     return elem.name === name;
-  //   }));
-  // }
+  setToken(token: string) {
+    this.token = token;
+  }
 
-  userExists(name: string):boolean{
-    return this.Users.indexOf(name) !==-1;
+  getUserGroups() {
+    return this.http.get<any>(this.baseUrl + '?action=get-usergroups&token=' + this.token);
+  }
+
+  userExists(name: string) {
+    return of(this.users.filter(elem => {
+      return elem.name === name;
+    }));
+  }
+
+  addUserGroup(newUserGroup) {
+    return this.http.post<any>(
+      this.baseUrl + '?action=add-usergroup&token=' + this.token, newUserGroup
+    );
+  }
+
+  deleteUserGroup(UserGroup) {
+    return this.http.post<any>(
+      this.baseUrl + '?action=delete-usergroup&token=' + this.token, UserGroup
+    );
+  }
+
+  getUsers(id: number) {
+    return this.http.get<any>(
+      this.baseUrl + `?action=get-users&usergroup=${id}`+ `&token=${this.token}`
+    );
   }
 
 
 
-  getUserGroups(): Observable<UserGroup[]> {
-    return of(this.userGroups);
-  }
-
-  addUserGroup(newUserGroup: UserGroup) {
-    this.userGroups.push(newUserGroup);
-  }
-
-  deleteUserGroup(index: number) {
-    this.userGroups.splice(index, 1);
-  }
 }

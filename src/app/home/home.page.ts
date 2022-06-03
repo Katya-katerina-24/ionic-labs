@@ -36,12 +36,30 @@ export class HomePage {
     this.showNew = true;
   }
 
-  delete(index: number){
-    this.dataGetter.deleteUserGroup(index);
+
+
+  delete(userGroup){
+    this.dataGetter.deleteUserGroup(userGroup).subscribe(
+      res => {
+        this.dataGetter.getUserGroups().subscribe(
+          (data) => {
+            this.userGroups = data;
+          }
+        );
+      }
+    );
   }
 
   addUserGroup(newUserGroup){
-    this.dataGetter.addUserGroup(newUserGroup);
+    this.dataGetter.addUserGroup(newUserGroup).subscribe(
+      res => {
+        this.dataGetter.getUserGroups().subscribe(
+          (data) => {
+            this.userGroups = data;
+          }
+        );
+      }
+    );
     this.showNew = false;
   }
 }

@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { DataGetterService } from "../services/data-getter.service";
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { SharedDataService } from '../services/shared-data.service';
+
 
 @Component({
   selector: 'app-users',
@@ -9,18 +10,22 @@ import { SharedDataService } from '../services/shared-data.service';
   styleUrls: ['./users.page.scss'],
 })
 export class UsersPage implements OnInit {
-  userGroup: string;
+  userGroupId: number;
+  userGroupName: string;
   users: any[];
 
   textData: string;
 
   constructor(private dataGetter: DataGetterService,
     private route: ActivatedRoute,
-    private sharedData: SharedDataService) { }
+    private router: Router,
+    private sharedData: SharedDataService) {
+      this.userGroupId = +this.route.snapshot.paramMap.get('userGroupId');
+    }
 
   ngOnInit() {
-    this.userGroup = this.route.snapshot.paramMap.get('userGroup');
-    this.dataGetter.getUsers(this.userGroup).subscribe(
+    this.userGroupName = this.route.snapshot.paramMap.get('userGroupName');
+    this.dataGetter.getUsers(this.userGroupId).subscribe(
       data => {
         this.users = data;
       }

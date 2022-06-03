@@ -22,6 +22,10 @@ const routes: Routes = [
     loadChildren: () => import('./users/users.module').then( m => m.UsersPageModule),
     canActivate: [AuthGuard]
   },
+  {
+    path: 'http-test',
+    loadChildren: () => import('./http-test/http-test.module').then( m => m.HttpTestPageModule)
+  },
 ];
 
 @NgModule({

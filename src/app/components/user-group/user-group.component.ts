@@ -1,5 +1,5 @@
 import { Component, OnInit, EventEmitter, Input, Output } from '@angular/core';
-import { UserGroup } from "../../services/data-getter.service";
+import { DataGetterService, UserGroup } from "../../services/data-getter.service";
 
 @Component({
   selector: 'app-user-group',
@@ -14,7 +14,7 @@ export class UserGroupComponent implements OnInit {
   @Output() cancelAddingUserGroup = new EventEmitter();
   title: string;
 
-  constructor() { }
+  constructor(private dataGetter: DataGetterService) { }
 
   ngOnInit() {
     if(this.isNew) {
@@ -38,5 +38,11 @@ export class UserGroupComponent implements OnInit {
     if(this.isNew) {
       this.cancelAddingUserGroup.emit();
     }
+  }
+
+  saveUserGroup() {
+    this.dataGetter.editUserGroup(this.userGroup).subscribe(
+      data => console.log(data)
+    );
   }
 }

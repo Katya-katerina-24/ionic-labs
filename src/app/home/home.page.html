@@ -15,7 +15,7 @@
 <ion-content [fullscreen]="true">
   <ion-list>
     <ion-list-header>
-      <ion-label>Автомобілі</ion-label>
+      <ion-label>Автостоянки</ion-label>
       <ion-button shape="round" fill="outline"
         color="success" (click)="add()">
         <ion-icon slot="start" name="add"></ion-icon>Додати
@@ -34,7 +34,7 @@
             <ion-icon name="create"></ion-icon>Змінити
           </ion-item-option>
 
-          <ion-item-option color="danger" (click)="delete(i)">
+          <ion-item-option color="danger" (click)="delete(userGroup)">
             <ion-icon name="trash"></ion-icon>Видалити
           </ion-item-option>
         </ion-item-options>
@@ -46,8 +46,8 @@
         </ion-item>
 
         <ion-item-options side="end">
-          <ion-item-option color="secondary" routerLink="/users/{{userGroup.parkingName}}"
-                           routerDirection="forward">
+          <ion-item-option color="secondary" routerLink="/users/{{userGroup.id}}"
+          routerDirection="forward">
             <ion-icon name="list"></ion-icon>Авто
           </ion-item-option>
         </ion-item-options>
